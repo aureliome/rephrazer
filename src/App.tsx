@@ -6,10 +6,12 @@ import Select from "./components/Select";
 export default function App() {
   // ------------- State -------------
   const [text, setText] = useState("");
-  const [level, setLevel] = useState<"custom" | "soft" | "medium" | "hard">("custom");
+  const [level, setLevel] = useState<"custom" | "soft" | "medium" | "hard">(
+    "custom"
+  );
 
   // Core toggles
-  const [spellingGrammar, setSpellingGrammar] = useState(true);
+  const [spellingGrammar, setSpellingGrammar] = useState(false);
   const [syntaxRefinement, setSyntaxRefinement] = useState(false);
   const [logicalCoherence, setLogicalCoherence] = useState(false);
   const [factCheck, setFactCheck] = useState(false);
@@ -20,14 +22,20 @@ export default function App() {
 
   // Tone/Formatting (checkbox semantics: unchecked => preserve, checked => adjust)
   const [toneMode, setToneMode] = useState<"preserve" | "adjust">("preserve");
-  const [formatMode, setFormatMode] = useState<"preserve" | "adjust">("preserve");
+  const [formatMode, setFormatMode] = useState<"preserve" | "adjust">(
+    "preserve"
+  );
 
   // Other dropdowns
-  const [clarity, setClarity] = useState<"none" | "minimal" | "moderate" | "full">("minimal");
+  const [clarity, setClarity] = useState<
+    "none" | "minimal" | "moderate" | "full"
+  >("minimal");
   const [lengthPolicy, setLengthPolicy] = useState<
     "preserve" | "slight" | "shorter" | "longer" | "flexible"
   >("preserve");
-  const [audience, setAudience] = useState<"unchanged" | "general" | "layman" | "expert">("unchanged");
+  const [audience, setAudience] = useState<
+    "unchanged" | "general" | "layman" | "expert"
+  >("unchanged");
 
   // Output options
   const [highlightBold, setHighlightBold] = useState(true);
@@ -93,21 +101,25 @@ export default function App() {
     const lines: string[] = [];
 
     if (spellingGrammar) lines.push("Fix spelling, grammar, and punctuation.");
-    if (syntaxRefinement) lines.push(
-      "Improve syntax and minor wording to enhance readability without altering meaning unnecessarily."
-    );
+    if (syntaxRefinement)
+      lines.push(
+        "Improve syntax and minor wording to enhance readability without altering meaning unnecessarily."
+      );
 
     if (clarity !== "none") {
       const map: Record<typeof clarity, string> = {
         none: "",
-        minimal: "Improve clarity minimally; only adjust phrasing where necessary.",
-        moderate: "Improve clarity and flow with moderate rewording and limited restructuring.",
+        minimal:
+          "Improve clarity minimally; only adjust phrasing where necessary.",
+        moderate:
+          "Improve clarity and flow with moderate rewording and limited restructuring.",
         full: "Improve clarity with freedom to heavily rephrase and restructure when beneficial.",
       };
       if (map[clarity]) lines.push(map[clarity]);
     }
 
-    if (logicalCoherence) lines.push("Ensure logical coherence and fix contradictions.");
+    if (logicalCoherence)
+      lines.push("Ensure logical coherence and fix contradictions.");
 
     if (factCheck) {
       lines.push(
@@ -117,7 +129,9 @@ export default function App() {
 
     // Tone & Formatting
     lines.push(
-      toneMode === "preserve" ? "Preserve the original tone." : "Adjust tone if it improves quality and intent."
+      toneMode === "preserve"
+        ? "Preserve the original tone."
+        : "Adjust tone if it improves quality and intent."
     );
     lines.push(
       formatMode === "preserve"
@@ -126,8 +140,12 @@ export default function App() {
     );
 
     // Structure & creativity
-    if (restructure) lines.push("You may restructure sentences for better flow.");
-    if (rewriteCreatively) lines.push("You may rewrite creatively while keeping the main meaning and purpose.");
+    if (restructure)
+      lines.push("You may restructure sentences for better flow.");
+    if (rewriteCreatively)
+      lines.push(
+        "You may rewrite creatively while keeping the main meaning and purpose."
+      );
 
     // Meaning logic per your spec
     if (!meaningAdapt) {
@@ -139,7 +157,10 @@ export default function App() {
     }
 
     // Style
-    if (styleEnhance) lines.push("Enhance style and vocabulary when it improves readability and precision.");
+    if (styleEnhance)
+      lines.push(
+        "Enhance style and vocabulary when it improves readability and precision."
+      );
 
     // Length policy
     const lengthMap: Record<typeof lengthPolicy, string> = {
@@ -181,9 +202,13 @@ export default function App() {
     const lines: string[] = [];
     lines.push("Return the corrected text only.");
     if (highlightBold) {
-      lines.push("Highlight every change by making only the changed word(s) **bold**.");
+      lines.push(
+        "Highlight every change by making only the changed word(s) **bold**."
+      );
     } else {
-      lines.push("Do not use bold to highlight changes; present the final text plainly.");
+      lines.push(
+        "Do not use bold to highlight changes; present the final text plainly."
+      );
     }
     if (finalComment) {
       lines.push(
@@ -209,7 +234,9 @@ export default function App() {
     const rules = selectedRulesList.map((l) => `- ${l}`).join("\n");
     const outputs = outputRules.map((l) => `- ${l}`).join("\n");
 
-    return `${header}${levelLine}\n\nRules:\n${rules}\n\nOutput Rules:\n${outputs}\n\nText to rephrase:\n\n\`\`\`\n${text || "[PASTE TEXT HERE]"}\n\`\`\``;
+    return `${header}${levelLine}\n\nRules:\n${rules}\n\nOutput Rules:\n${outputs}\n\nText to rephrase:\n\n\`\`\`\n${
+      text || "[PASTE TEXT HERE]"
+    }\n\`\`\``;
   }, [selectedRulesList, outputRules, text, level]);
 
   // ------------- Helpers -------------
@@ -225,12 +252,27 @@ export default function App() {
   // ------------- Minimal Dev Tests (console) -------------
   useEffect(() => {
     try {
-      console.assert(typeof builtPrompt === "string", "builtPrompt should be a string");
-      console.assert(builtPrompt.includes("Rules:"), "Prompt should include 'Rules:' section");
-      console.assert(builtPrompt.includes("Output Rules:"), "Prompt should include 'Output Rules:' section");
-      console.assert(builtPrompt.includes("```"), "Prompt should include fenced code block");
+      console.assert(
+        typeof builtPrompt === "string",
+        "builtPrompt should be a string"
+      );
+      console.assert(
+        builtPrompt.includes("Rules:"),
+        "Prompt should include 'Rules:' section"
+      );
+      console.assert(
+        builtPrompt.includes("Output Rules:"),
+        "Prompt should include 'Output Rules:' section"
+      );
+      console.assert(
+        builtPrompt.includes("```"),
+        "Prompt should include fenced code block"
+      );
       const testJoin = ["a", "b"].join("\n");
-      console.assert(testJoin === "a\nb", "Join with \n should produce a single newline");
+      console.assert(
+        testJoin === "a\nb",
+        "Join with \n should produce a single newline"
+      );
     } catch (e) {
       console.warn("Dev test failed:", e);
     }
@@ -242,29 +284,44 @@ export default function App() {
       <div className="max-w-5xl mx-auto px-4 py-8">
         <header className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Rephrase Prompt Builder</h1>
+            <h1 className="text-2xl font-bold tracking-tight">
+              Rephrase Prompt Builder
+            </h1>
             <p className="text-sm text-slate-600 mt-1">
-              Compose precise prompts for ChatGPT and similar tools. Choose checks, apply a level, then generate your final prompt.
+              Compose precise prompts for ChatGPT and similar tools. Choose
+              checks, apply a level, then generate your final prompt.
             </p>
           </div>
           <div className="flex gap-2">
-            <button type="button" onClick={applySoft}
+            <button
+              type="button"
+              onClick={applySoft}
               className={`px-3 py-2 rounded-xl text-sm font-medium border ${
-                level === "soft" ? "bg-emerald-600 text-white border-emerald-600" : "bg-white border-slate-300"
+                level === "soft"
+                  ? "bg-emerald-600 text-white border-emerald-600"
+                  : "bg-white border-slate-300"
               }`}
             >
               Soft
             </button>
-            <button type="button" onClick={applyMedium}
+            <button
+              type="button"
+              onClick={applyMedium}
               className={`px-3 py-2 rounded-xl text-sm font-medium border ${
-                level === "medium" ? "bg-amber-600 text-white border-amber-600" : "bg-white border-slate-300"
+                level === "medium"
+                  ? "bg-amber-600 text-white border-amber-600"
+                  : "bg-white border-slate-300"
               }`}
             >
               Medium
             </button>
-            <button type="button" onClick={applyHard}
+            <button
+              type="button"
+              onClick={applyHard}
               className={`px-3 py-2 rounded-xl text-sm font-medium border ${
-                level === "hard" ? "bg-rose-600 text-white border-rose-600" : "bg-white border-slate-300"
+                level === "hard"
+                  ? "bg-rose-600 text-white border-rose-600"
+                  : "bg-white border-slate-300"
               }`}
             >
               Hard
@@ -275,53 +332,139 @@ export default function App() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* Left column */}
           <div className="space-y-6">
-            <Section title="Checks & Corrections" right={<span className="text-xs text-slate-500">Level: {level}</span>}>
+            <Section
+              title="Checks & Corrections"
+              right={
+                <span className="text-xs text-slate-500">Level: {level}</span>
+              }
+            >
               <div className="space-y-5">
                 {/* Basics */}
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-700 mb-1">Basics</h3>
+                  <h3 className="text-sm font-semibold text-slate-700 mb-1">
+                    Basics
+                  </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
                     <div>
-                      <Toggle label="Spelling & grammar" checked={spellingGrammar} onChange={(v)=>{setSpellingGrammar(v); markCustom();}} />
-                      <Toggle label="Syntax refinement" checked={syntaxRefinement} onChange={(v)=>{setSyntaxRefinement(v); markCustom();}} />
                       <Toggle
-                        label="Adjust formatting if helpful"
-                        checked={formatMode === "adjust"}
-                        onChange={(v)=>{setFormatMode(v ? "adjust" : "preserve"); markCustom();}}
+                        label="Spelling & grammar"
+                        checked={spellingGrammar}
+                        onChange={(v) => {
+                          setSpellingGrammar(v);
+                          markCustom();
+                        }}
                       />
                     </div>
                     <div>
                       <Toggle
-                        label="Adjust tone if helpful"
-                        checked={toneMode === "adjust"}
-                        onChange={(v)=>{setToneMode(v ? "adjust" : "preserve"); markCustom();}}
+                        label="Syntax refinement"
+                        checked={syntaxRefinement}
+                        onChange={(v) => {
+                          setSyntaxRefinement(v);
+                          markCustom();
+                        }}
                       />
-                      <Toggle label="Enhance style & vocabulary" checked={styleEnhance} onChange={(v)=>{setStyleEnhance(v); markCustom();}} />
                     </div>
                   </div>
                 </div>
 
                 {/* Structure & Accuracy */}
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-700 mb-1">Structure & Accuracy</h3>
+                  <h3 className="text-sm font-semibold text-slate-700 mb-1">
+                    Structure & Accuracy
+                  </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
                     <div>
-                      <Toggle label="Logical coherence" checked={logicalCoherence} onChange={(v)=>{setLogicalCoherence(v); markCustom();}} />
-                      <Toggle label="Restructure sentences" checked={restructure} onChange={(v)=>{setRestructure(v); markCustom();}} />
+                      <Toggle
+                        label="Logical coherence"
+                        checked={logicalCoherence}
+                        onChange={(v) => {
+                          setLogicalCoherence(v);
+                          markCustom();
+                        }}
+                      />
+                      <Toggle
+                        label="Restructure sentences"
+                        checked={restructure}
+                        onChange={(v) => {
+                          setRestructure(v);
+                          markCustom();
+                        }}
+                      />
                     </div>
                     <div>
-                      <Toggle label="Fact-check" checked={factCheck} onChange={(v)=>{setFactCheck(v); markCustom();}} />
-                      <Toggle label="Adapt meaning if helpful" checked={meaningAdapt} onChange={(v)=>{setMeaningAdapt(v); markCustom();}} />
+                      <Toggle
+                        label="Fact-check"
+                        checked={factCheck}
+                        onChange={(v) => {
+                          setFactCheck(v);
+                          markCustom();
+                        }}
+                      />
+                      <Toggle
+                        label="Enhance style & vocabulary"
+                        checked={styleEnhance}
+                        onChange={(v) => {
+                          setStyleEnhance(v);
+                          markCustom();
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Style */}
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-700 mb-1">
+                    Style
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
+                    <div>
+                      <Toggle
+                        label="Adjust tone if helpful"
+                        checked={toneMode === "adjust"}
+                        onChange={(v) => {
+                          setToneMode(v ? "adjust" : "preserve");
+                          markCustom();
+                        }}
+                      />
+                      <Toggle
+                        label="Adapt meaning if helpful"
+                        checked={meaningAdapt}
+                        onChange={(v) => {
+                          setMeaningAdapt(v);
+                          markCustom();
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Toggle
+                        label="Adjust formatting if helpful"
+                        checked={formatMode === "adjust"}
+                        onChange={(v) => {
+                          setFormatMode(v ? "adjust" : "preserve");
+                          markCustom();
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
 
                 {/* Creativity */}
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-700 mb-1">Creativity</h3>
+                  <h3 className="text-sm font-semibold text-slate-700 mb-1">
+                    Creativity
+                  </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
                     <div>
-                      <Toggle label="Rewrite creatively" checked={rewriteCreatively} onChange={(v)=>{setRewriteCreatively(v); markCustom();}} />
+                      <Toggle
+                        label="Rewrite creatively"
+                        checked={rewriteCreatively}
+                        onChange={(v) => {
+                          setRewriteCreatively(v);
+                          markCustom();
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -333,7 +476,10 @@ export default function App() {
                 <Select
                   label="Improve clarity"
                   value={clarity}
-                  onChange={(v) => {setClarity(v as any); markCustom();}}
+                  onChange={(v) => {
+                    setClarity(v as any);
+                    markCustom();
+                  }}
                   options={[
                     { value: "none", label: "No clarity changes" },
                     { value: "minimal", label: "Minimal" },
@@ -344,7 +490,10 @@ export default function App() {
                 <Select
                   label="Length policy"
                   value={lengthPolicy}
-                  onChange={(v) => {setLengthPolicy(v as any); markCustom();}}
+                  onChange={(v) => {
+                    setLengthPolicy(v as any);
+                    markCustom();
+                  }}
                   options={[
                     { value: "preserve", label: "Preserve length" },
                     { value: "slight", label: "Slight change (±15%)" },
@@ -356,7 +505,10 @@ export default function App() {
                 <Select
                   label="Audience"
                   value={audience}
-                  onChange={(v) => {setAudience(v as any); markCustom();}}
+                  onChange={(v) => {
+                    setAudience(v as any);
+                    markCustom();
+                  }}
                   options={[
                     { value: "unchanged", label: "Unchanged" },
                     { value: "general", label: "General audience" },
@@ -369,8 +521,16 @@ export default function App() {
 
             <Section title="Output Options">
               <div className="grid grid-cols-1 gap-2">
-                <Toggle label="Highlight changes in bold" checked={highlightBold} onChange={setHighlightBold} />
-                <Toggle label="Add final comment after text" checked={finalComment} onChange={setFinalComment} />
+                <Toggle
+                  label="Highlight changes in bold"
+                  checked={highlightBold}
+                  onChange={setHighlightBold}
+                />
+                <Toggle
+                  label="Add final comment after text"
+                  checked={finalComment}
+                  onChange={setFinalComment}
+                />
               </div>
             </Section>
           </div>
@@ -384,7 +544,10 @@ export default function App() {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
               />
-              <p className="text-xs text-slate-500 mt-2">Tip: Paste your paragraph(s) here. The prompt will include this under a code block.</p>
+              <p className="text-xs text-slate-500 mt-2">
+                Tip: Paste your paragraph(s) here. The prompt will include this
+                under a code block.
+              </p>
             </Section>
 
             <Section
@@ -402,13 +565,17 @@ export default function App() {
               <div className="flex items-center justify-between mb-3">
                 <button
                   type="button"
-                  onClick={() => { /* no-op */ }}
+                  onClick={() => {
+                    /* no-op */
+                  }}
                   className="px-3 py-2 rounded-xl text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-500"
                   title="The prompt below updates automatically as you tweak options."
                 >
                   Create prompt
                 </button>
-                <span className="text-xs text-slate-500">Auto-updates as you change options</span>
+                <span className="text-xs text-slate-500">
+                  Auto-updates as you change options
+                </span>
               </div>
               <textarea
                 className="w-full min-h-[260px] rounded-xl border border-slate-300 p-3 text-sm font-mono"
@@ -420,7 +587,8 @@ export default function App() {
         </div>
 
         <footer className="mt-10 text-center text-xs text-slate-500">
-          Built with React + Tailwind (multi-file structure). Presets follow Soft / Medium / Hard semantics you defined.
+          Built with React + Tailwind (multi-file structure). Presets follow
+          Soft / Medium / Hard semantics you defined.
         </footer>
       </div>
     </div>
