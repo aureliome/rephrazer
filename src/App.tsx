@@ -25,7 +25,7 @@ export default function App() {
   // Other dropdowns
   const [clarity, setClarity] = useState<
     "none" | "minimal" | "moderate" | "full"
-  >("minimal");
+  >("none");
   const [lengthPolicy, setLengthPolicy] = useState<
     "preserve" | "slight" | "shorter" | "longer" | "flexible"
   >("preserve");
@@ -96,34 +96,35 @@ export default function App() {
   const selectedRulesList = useMemo(() => {
     const lines: string[] = [];
 
-    if (spellingGrammar) lines.push("Fix spelling, grammar, and punctuation.");
-    if (syntaxRefinement)
+    // Basics
+    if (spellingGrammar) {
+      lines.push("Fix spelling, grammar, and punctuation.");
+    }
+    if (syntaxRefinement) {
       lines.push(
         "Improve syntax and minor wording to enhance readability without altering meaning unnecessarily."
       );
-
-    if (clarity !== "none") {
-      const map: Record<typeof clarity, string> = {
-        none: "",
-        minimal:
-          "Improve clarity minimally; only adjust phrasing where necessary.",
-        moderate:
-          "Improve clarity and flow with moderate rewording and limited restructuring.",
-        full: "Improve clarity with freedom to heavily rephrase and restructure when beneficial.",
-      };
-      if (map[clarity]) lines.push(map[clarity]);
     }
 
-    if (logicalCoherence)
+    // Structure & Accuracy
+    if (logicalCoherence) {
       lines.push("Ensure logical coherence and fix contradictions.");
-
+    }
     if (factCheck) {
       lines.push(
         "Fact-check doubtful, technical, historical, or numerical statements. Correct inaccuracies. Cite sources in the final comment if corrections were made."
       );
     }
+    if (restructure) {
+      lines.push("You may restructure sentences for better flow.");
+    }
+    if (styleEnhance) {
+      lines.push(
+        "Enhance style and vocabulary when it improves readability and precision."
+      );
+    }
 
-    // Tone & Formatting
+    // Style
     if (toneMode) {
       lines.push("Adjust tone if it improves quality and intent.");
     } else {
@@ -136,29 +137,31 @@ export default function App() {
     } else {
       lines.push("Preserve the original formatting and structure.");
     }
+    if (meaningAdapt) {
+      lines.push(
+        "If the original is flawed or ambiguous, adapt wording slightly to clarify without changing the core message."
+      );
+    } else {
+      lines.push("Keep the main meaning and purpose the same.");
+    }
 
-    // Structure & creativity
-    if (restructure)
-      lines.push("You may restructure sentences for better flow.");
+    // Creativity
     if (rewriteCreatively)
       lines.push(
         "You may rewrite creatively while keeping the main meaning and purpose."
       );
 
-    // Meaning logic per your spec
-    if (!meaningAdapt) {
-      lines.push("Keep the main meaning and purpose the same.");
-    } else {
-      lines.push(
-        "If the original is flawed or ambiguous, adapt wording slightly to clarify without changing the core message."
-      );
+    // Clarity
+    if (clarity !== "none") {
+      const clarityMap: Record<typeof clarity, string> = {
+        minimal:
+          "Improve clarity minimally; only adjust phrasing where necessary.",
+        moderate:
+          "Improve clarity and flow with moderate rewording and limited restructuring.",
+        full: "Improve clarity with freedom to heavily rephrase and restructure when beneficial.",
+      };
+      if (clarityMap[clarity]) lines.push(clarityMap[clarity]);
     }
-
-    // Style
-    if (styleEnhance)
-      lines.push(
-        "Enhance style and vocabulary when it improves readability and precision."
-      );
 
     // Length policy
     const lengthMap: Record<typeof lengthPolicy, string> = {
@@ -203,10 +206,6 @@ export default function App() {
       lines.push(
         "Highlight every change by making only the changed word(s) **bold**."
       );
-    } else {
-      lines.push(
-        "Do not use bold to highlight changes; present the final text plainly."
-      );
     }
     if (finalComment) {
       lines.push(
@@ -220,19 +219,11 @@ export default function App() {
 
   const builtPrompt = useMemo((): string => {
     const header = `You will rephrase the provided text using the following rules.`;
-    const levelLine =
-      level === "custom"
-        ? ""
-        : level === "soft"
-        ? "\nLevel preset: Soft (minimal intervention)."
-        : level === "medium"
-        ? "\nLevel preset: Medium (improve readability; fact-check)."
-        : "\nLevel preset: Hard (flexible rewrite; fact-check).";
 
     const rules = selectedRulesList.map((l) => `- ${l}`).join("\n");
     const outputs = outputRules.map((l) => `- ${l}`).join("\n");
 
-    return `${header}${levelLine}\n\nRules:\n${rules}\n\nOutput Rules:\n${outputs}\n\nText to rephrase:\n\n\`\`\`\n${
+    return `${header}\n\nRules:\n${rules}\n\nOutput Rules:\n${outputs}\n\nText to rephrase:\n\n\`\`\`\n${
       text || "[PASTE TEXT HERE]"
     }\n\`\`\``;
   }, [selectedRulesList, outputRules, text, level]);
