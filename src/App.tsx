@@ -19,8 +19,6 @@ export default function App() {
   const [styleEnhance, setStyleEnhance] = useState(false);
   const [toneMode, setToneMode] = useState(false);
   const [formatMode, setFormatMode] = useState(false);
-  const [meaningAdapt, setMeaningAdapt] = useState(false);
-  const [rewriteCreatively, setRewriteCreatively] = useState(false);
 
   // Other dropdowns
   const [clarity, setClarity] = useState<
@@ -29,6 +27,9 @@ export default function App() {
   const [lengthPolicy, setLengthPolicy] = useState<
     "preserve" | "slight" | "shorter" | "longer" | "flexible"
   >("preserve");
+  const [meaning, setMeaning] = useState<"preserve" | "adapt" | "rewrite">(
+    "preserve"
+  );
   const [audience, setAudience] = useState<
     "unchanged" | "general" | "layman" | "expert"
   >("unchanged");
@@ -47,11 +48,10 @@ export default function App() {
     setToneMode(false);
     setFormatMode(false);
     setRestructure(false);
-    setRewriteCreatively(false);
-    setMeaningAdapt(false);
     setStyleEnhance(false);
-    setClarity("minimal");
+    setClarity("none");
     setLengthPolicy("preserve");
+    setMeaning("preserve");
     setAudience("unchanged");
   };
 
@@ -68,11 +68,10 @@ export default function App() {
     setToneMode(false);
     setFormatMode(false);
     setRestructure(false);
-    setRewriteCreatively(false);
-    setMeaningAdapt(false);
     setStyleEnhance(false);
     setClarity("minimal");
     setLengthPolicy("preserve");
+    setMeaning("preserve");
     setAudience("unchanged");
   };
 
@@ -89,11 +88,10 @@ export default function App() {
     setToneMode(false);
     setFormatMode(false);
     setRestructure(true);
-    setRewriteCreatively(false);
-    setMeaningAdapt(false);
     setStyleEnhance(true);
     setClarity("moderate");
     setLengthPolicy("slight");
+    setMeaning("adapt");
     setAudience("unchanged");
   };
 
@@ -110,11 +108,10 @@ export default function App() {
     setToneMode(true);
     setFormatMode(true);
     setRestructure(true);
-    setRewriteCreatively(true);
-    setMeaningAdapt(true);
     setStyleEnhance(true);
     setClarity("full");
     setLengthPolicy("flexible");
+    setMeaning("rewrite");
     setAudience("unchanged");
   };
 
@@ -166,19 +163,6 @@ export default function App() {
     } else {
       lines.push("Preserve the original formatting and structure.");
     }
-    if (meaningAdapt) {
-      lines.push(
-        "If the original is flawed or ambiguous, adapt wording slightly to clarify without changing the core message."
-      );
-    } else {
-      lines.push("Keep the main meaning and purpose the same.");
-    }
-
-    // Creativity
-    if (rewriteCreatively)
-      lines.push(
-        "You may rewrite creatively while keeping the main meaning and purpose."
-      );
 
     // Clarity
     if (clarity !== "none") {
@@ -202,6 +186,15 @@ export default function App() {
     };
     lines.push(lengthMap[lengthPolicy]);
 
+    // Meaning
+    const meaningMap: Record<typeof meaning, string> = {
+      preserve: "Keep the main meaning and purpose the same.",
+      adapt:
+        "If the original is flawed or ambiguous, adapt wording slightly to clarify without changing the core message.",
+      rewrite: "You may rewrite creatively while keeping the core message.",
+    };
+    lines.push(meaningMap[meaning]);
+
     // Audience
     const audienceMap: Record<typeof audience, string> = {
       unchanged: "Maintain the current audience level.",
@@ -221,10 +214,9 @@ export default function App() {
     toneMode,
     formatMode,
     restructure,
-    rewriteCreatively,
-    meaningAdapt,
     styleEnhance,
     lengthPolicy,
+    meaning,
     audience,
   ]);
 
@@ -446,14 +438,6 @@ export default function App() {
                           markCustom();
                         }}
                       />
-                      <Toggle
-                        label="Adapt meaning if helpful"
-                        checked={meaningAdapt}
-                        onChange={(v) => {
-                          setMeaningAdapt(v);
-                          markCustom();
-                        }}
-                      />
                     </div>
                     <div>
                       <Toggle
@@ -461,25 +445,6 @@ export default function App() {
                         checked={formatMode}
                         onChange={(v) => {
                           setFormatMode(v);
-                          markCustom();
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Creativity */}
-                <div>
-                  <h3 className="text-sm font-semibold text-slate-700 mb-1">
-                    Creativity
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
-                    <div>
-                      <Toggle
-                        label="Rewrite creatively"
-                        checked={rewriteCreatively}
-                        onChange={(v) => {
-                          setRewriteCreatively(v);
                           markCustom();
                         }}
                       />
@@ -518,6 +483,19 @@ export default function App() {
                     { value: "shorter", label: "Prefer shorter" },
                     { value: "longer", label: "Allow longer" },
                     { value: "flexible", label: "Flexible" },
+                  ]}
+                />
+                <Select
+                  label="Meaning"
+                  value={meaning}
+                  onChange={(v) => {
+                    setMeaning(v as any);
+                    markCustom();
+                  }}
+                  options={[
+                    { value: "preserve", label: "No meaning changes" },
+                    { value: "adapt", label: "Adapt if helpful" },
+                    { value: "rewrite", label: "Rewrite creatively" },
                   ]}
                 />
                 <Select
