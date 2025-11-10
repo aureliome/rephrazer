@@ -38,7 +38,28 @@ export default function App() {
   const [finalComment, setFinalComment] = useState(false);
 
   // ------------- Presets -------------
+  const clearAll = () => {
+    setLevel("custom");
+    setSpellingGrammar(false);
+    setSyntaxRefinement(false);
+    setLogicalCoherence(false);
+    setFactCheck(false);
+    setToneMode(false);
+    setFormatMode(false);
+    setRestructure(false);
+    setRewriteCreatively(false);
+    setMeaningAdapt(false);
+    setStyleEnhance(false);
+    setClarity("minimal");
+    setLengthPolicy("preserve");
+    setAudience("unchanged");
+  };
+
   const applySoft = () => {
+    if (level === "soft") {
+      clearAll();
+      return;
+    }
     setLevel("soft");
     setSpellingGrammar(true);
     setSyntaxRefinement(true);
@@ -56,6 +77,10 @@ export default function App() {
   };
 
   const applyMedium = () => {
+    if (level === "medium") {
+      clearAll();
+      return;
+    }
     setLevel("medium");
     setSpellingGrammar(true);
     setSyntaxRefinement(true);
@@ -73,6 +98,10 @@ export default function App() {
   };
 
   const applyHard = () => {
+    if (level === "hard") {
+      clearAll();
+      return;
+    }
     setLevel("hard");
     setSpellingGrammar(true);
     setSyntaxRefinement(true);
