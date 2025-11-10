@@ -259,35 +259,6 @@ export default function App() {
     }
   };
 
-  // ------------- Minimal Dev Tests (console) -------------
-  useEffect(() => {
-    try {
-      console.assert(
-        typeof builtPrompt === "string",
-        "builtPrompt should be a string"
-      );
-      console.assert(
-        builtPrompt.includes("Rules:"),
-        "Prompt should include 'Rules:' section"
-      );
-      console.assert(
-        builtPrompt.includes("Output Rules:"),
-        "Prompt should include 'Output Rules:' section"
-      );
-      console.assert(
-        builtPrompt.includes("```"),
-        "Prompt should include fenced code block"
-      );
-      const testJoin = ["a", "b"].join("\n");
-      console.assert(
-        testJoin === "a\nb",
-        "Join with \n should produce a single newline"
-      );
-    } catch (e) {
-      console.warn("Dev test failed:", e);
-    }
-  }, [builtPrompt]);
-
   // ------------- Render -------------
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900">
@@ -295,11 +266,11 @@ export default function App() {
         <header className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">
-              Rephrase Prompt Builder
+              Rephrazer - Rephrase Prompt Builder
             </h1>
             <p className="text-sm text-slate-600 mt-1">
-              Compose precise prompts for ChatGPT and similar tools. Choose
-              checks, apply a level, then generate your final prompt.
+              Compose precise prompts for ChatGPT and similar tools. <br />{" "}
+              Choose checks, apply a level, then generate your final prompt.
             </p>
           </div>
           <div className="flex gap-2">
@@ -558,21 +529,6 @@ export default function App() {
                 </button>
               }
             >
-              <div className="flex items-center justify-between mb-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    /* no-op */
-                  }}
-                  className="px-3 py-2 rounded-xl text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-500"
-                  title="The prompt below updates automatically as you tweak options."
-                >
-                  Create prompt
-                </button>
-                <span className="text-xs text-slate-500">
-                  Auto-updates as you change options
-                </span>
-              </div>
               <textarea
                 className="w-full min-h-[260px] rounded-xl border border-slate-300 p-3 text-sm font-mono"
                 readOnly
@@ -583,8 +539,15 @@ export default function App() {
         </div>
 
         <footer className="mt-10 text-center text-xs text-slate-500">
-          Built with React + Tailwind (multi-file structure). Presets follow
-          Soft / Medium / Hard semantics you defined.
+          Project created by{" "}
+          <a href="https://github.com/aureliome" target="_blank">
+            Aurelio Merenda
+          </a>
+          , available on{" "}
+          <a href="https://github.com/aureliome/rephrazer" target="_blank">
+            Github
+          </a>
+          .
         </footer>
       </div>
     </div>
