@@ -16,15 +16,11 @@ export default function App() {
   const [logicalCoherence, setLogicalCoherence] = useState(false);
   const [factCheck, setFactCheck] = useState(false);
   const [restructure, setRestructure] = useState(false);
-  const [rewriteCreatively, setRewriteCreatively] = useState(false);
-  const [meaningAdapt, setMeaningAdapt] = useState(false); // single source of truth for meaning
   const [styleEnhance, setStyleEnhance] = useState(false);
-
-  // Tone/Formatting (checkbox semantics: unchecked => preserve, checked => adjust)
-  const [toneMode, setToneMode] = useState<"preserve" | "adjust">("preserve");
-  const [formatMode, setFormatMode] = useState<"preserve" | "adjust">(
-    "preserve"
-  );
+  const [toneMode, setToneMode] = useState(false);
+  const [formatMode, setFormatMode] = useState(false);
+  const [meaningAdapt, setMeaningAdapt] = useState(false);
+  const [rewriteCreatively, setRewriteCreatively] = useState(false);
 
   // Other dropdowns
   const [clarity, setClarity] = useState<
@@ -48,8 +44,8 @@ export default function App() {
     setSyntaxRefinement(true);
     setLogicalCoherence(false);
     setFactCheck(false);
-    setToneMode("preserve");
-    setFormatMode("preserve");
+    setToneMode(false);
+    setFormatMode(false);
     setRestructure(false);
     setRewriteCreatively(false);
     setMeaningAdapt(false);
@@ -65,8 +61,8 @@ export default function App() {
     setSyntaxRefinement(true);
     setLogicalCoherence(true);
     setFactCheck(true);
-    setToneMode("preserve");
-    setFormatMode("preserve");
+    setToneMode(false);
+    setFormatMode(false);
     setRestructure(true);
     setRewriteCreatively(false);
     setMeaningAdapt(false);
@@ -82,8 +78,8 @@ export default function App() {
     setSyntaxRefinement(true);
     setLogicalCoherence(true);
     setFactCheck(true);
-    setToneMode("adjust");
-    setFormatMode("adjust");
+    setToneMode(true);
+    setFormatMode(true);
     setRestructure(true);
     setRewriteCreatively(true);
     setMeaningAdapt(true);
@@ -128,16 +124,18 @@ export default function App() {
     }
 
     // Tone & Formatting
-    lines.push(
-      toneMode === "preserve"
-        ? "Preserve the original tone."
-        : "Adjust tone if it improves quality and intent."
-    );
-    lines.push(
-      formatMode === "preserve"
-        ? "Preserve the original formatting and structure."
-        : "You may adjust formatting and structure if it improves readability."
-    );
+    if (toneMode) {
+      lines.push("Adjust tone if it improves quality and intent.");
+    } else {
+      lines.push("Preserve the original tone.");
+    }
+    if (formatMode) {
+      lines.push(
+        "You may adjust formatting and structure if it improves readability."
+      );
+    } else {
+      lines.push("Preserve the original formatting and structure.");
+    }
 
     // Structure & creativity
     if (restructure)
@@ -422,9 +420,9 @@ export default function App() {
                     <div>
                       <Toggle
                         label="Adjust tone if helpful"
-                        checked={toneMode === "adjust"}
+                        checked={toneMode}
                         onChange={(v) => {
-                          setToneMode(v ? "adjust" : "preserve");
+                          setToneMode(v);
                           markCustom();
                         }}
                       />
@@ -440,9 +438,9 @@ export default function App() {
                     <div>
                       <Toggle
                         label="Adjust formatting if helpful"
-                        checked={formatMode === "adjust"}
+                        checked={formatMode}
                         onChange={(v) => {
-                          setFormatMode(v ? "adjust" : "preserve");
+                          setFormatMode(v);
                           markCustom();
                         }}
                       />
