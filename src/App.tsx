@@ -269,8 +269,8 @@ export default function App() {
               Rephrazer - Rephrase Prompt Builder
             </h1>
             <p className="text-sm text-slate-600 mt-1">
-              Compose precise prompts for ChatGPT and similar tools. <br />{" "}
-              Choose checks, apply a level, then generate your final prompt.
+              Compose GPTs prompts for rephrasing texts. <br /> Choose checks,
+              apply a level, then generate your final prompt.
             </p>
           </div>
           <div className="flex gap-2">
