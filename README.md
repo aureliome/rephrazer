@@ -1,6 +1,8 @@
 # Rephrazer - Rephrase Prompt Builder
 
-Compose precise prompts for ChatGPT and similar tools.
+https://aureliome.github.io/rephrazer/
+
+Compose GPTs prompts for rephrasing texts.
 
 Choose checks, apply a level, then generate your final prompt.
 
